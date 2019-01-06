@@ -24,6 +24,7 @@ const schema = gql`
   type Message {
     id: ID!
     text: String!
+    user: User!
   }
 `;
 
@@ -74,8 +75,14 @@ const resolvers = {
 
   User: {
     username: user => `${user.firstname} ${user.lastname}`,
-  }
- };
+  },
+
+  Message: {
+    user: (parent, args, { me }) => {
+      return me;
+    },
+  },
+};
 
 const server = new ApolloServer({
   typeDefs: schema,
