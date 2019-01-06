@@ -46,7 +46,9 @@ const resolvers = {
   },
 
   User: {
-    username: () => 'Hans',
+    username: parent => {
+      return parent.username;
+    }
   }
  };
 
