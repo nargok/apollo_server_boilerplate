@@ -11,11 +11,19 @@ const schema = gql`
     users: [User!]
     me: User
     user(id: ID!): User
+
+    messages: [Message!]!
+    message(id: ID!): Message!
   }
 
   type User {
     id: ID!
     username: String!
+  }
+
+  type Message {
+    id: ID!
+    text: String!
   }
 `;
 
@@ -32,6 +40,17 @@ let users = {
   },
 };
 
+let messages = {
+  1: {
+    id: '1',
+    text: 'Hello World',
+  },
+  2: {
+    id: '2',
+    text: 'By World',
+  },
+};
+
 const me = users[1]
 
 const resolvers = {
@@ -44,6 +63,12 @@ const resolvers = {
     },
     users: () => {
       return Object.values(users);
+    },
+    messages: () => {
+      return Object.values(messages);
+    },
+    message: (parent, { id }) => {
+      return messages[id];
     },
   },
 
