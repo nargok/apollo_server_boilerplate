@@ -22,11 +22,13 @@ const schema = gql`
 let users = {
   1: {
     id: '1',
-    username: 'Robin Wieruch'
+    firstname: 'Robin',
+    lastname: 'Wieruch',
   },
   2: {
     id: '2',
-    username: 'Dave Davids'
+    firstname: 'Dave',
+    lastname: 'Davids',
   },
 };
 
@@ -46,9 +48,7 @@ const resolvers = {
   },
 
   User: {
-    username: user => {
-      return user.username;
-    }
+    username: user => `${user.firstname} ${user.lastname}`,
   }
  };
 
