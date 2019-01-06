@@ -18,17 +18,26 @@ const schema = gql`
   }
 `;
 
+let users = {
+  1: {
+    id: '1',
+    username: 'Robin Wieruch'
+  },
+  2: {
+    id: '2',
+    username: 'Dave Davids'
+  },
+};
+
+const me = users[1]
+
 const resolvers = {
   Query: {
     me: () => {
-      return {
-        username: 'Robin Wieruch',
-      };
+      return me;
     },
-    user: () => {
-      return {
-        username: 'Dave Davids',
-      };
+    user: (parent, { id }) => {
+      return users[id];
     },
   },
  };
