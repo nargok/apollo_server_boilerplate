@@ -1,10 +1,15 @@
 import Sequelize from 'sequelize';
 
 const sequelize = new Sequelize (
-  process.env.DATABASE,
-  process.env.DATABASE_USER,
-  process.env.DATABASE_PASSWORD,
+  // TODO 環境変数でDB設定ができるようにする
+  // process.env.DATABASE,
+  // process.env.DATABASE_USER,
+  // process.env.DATAVASE_PASSWORD,
+  'postgres', // DB name
+  'postgres', // user
+  'password', // password
   {
+    host: 'localhost',
     dialect: 'postgres',
   },
 );

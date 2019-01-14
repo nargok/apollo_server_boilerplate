@@ -4,7 +4,7 @@ import { ApolloServer } from 'apollo-server-express';
 
 import schema from './schema';
 import resolvers from './resolvers';
-import models, { seaquelize } from './models';
+import models, { sequelize } from './models';
 
 const app = express();
 
@@ -13,17 +13,17 @@ app.use(cors());
 const server = new ApolloServer({
   typeDefs: schema,
   resolvers,
-  context: {
+  context: async () => ({
     models,
-    me: models.users[1],
-  },
+    me: await models.User.findByLogin('admin'),
+  }),
 });
 
 server.applyMiddleware({ app, path: '/graphql' });
 
 const eraseDetabaseOnSync = true;
 
-seaquelize.sync({ force: eraseDetabaseOnSync }).then(async () => {
+sequelize.sync({ force: eraseDetabaseOnSync }).then(async () => {
   if (eraseDetabaseOnSync) {
     createUserWithMessages();
   }

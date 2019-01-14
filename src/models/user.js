@@ -1,4 +1,3 @@
-
 const user = (seaquelize, DataTypes) => {
   const User = seaquelize.define('user', {
     username: {
@@ -9,6 +8,20 @@ const user = (seaquelize, DataTypes) => {
   User.associate = models => {
     User.hasMany(models.Message, { onDelete: 'CASCADE' });
   };
+
+  User.findByLogin = async login => {
+    let user = await User.findOne({
+      where: { username: login },
+    });
+
+    if (!user) {
+      user = await User.findOne({
+        where: { email: login },
+      });
+    }
+
+    return user;
+  }
 
   return User;
 };

@@ -12,9 +12,6 @@ export default {
   },
 
   User: {
-    username: user => {
-      return `${user.firstname} ${user.lastname}`
-    },
     messages: async (user, args, { models }) => {
       return await models.Message.findAll({
         where: {
