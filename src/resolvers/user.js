@@ -1,7 +1,9 @@
 export default {
   Query: {
     me: async (parent, args, { models, me }) => {
-      return await models.User.findById(me.id);
+      if (!me) {
+        return null;
+      }
     },
     user: async (parent, { id }, { models }) => {
       return await models.User.findById(id);
