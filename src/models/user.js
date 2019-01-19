@@ -1,3 +1,5 @@
+import bcrypt from 'bcrypt';
+
 const user = (seaquelize, DataTypes) => {
   const User = seaquelize.define('user', {
     username: {
@@ -6,6 +8,23 @@ const user = (seaquelize, DataTypes) => {
       allowNull: false,
       validate: {
         notEmpty: true,
+      },
+    },
+    email: {
+      type: DataTypes.STRING,
+      unique: true,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+        isEmail: true,
+      },
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+        len: [7, 42]
       },
     },
   });
@@ -27,6 +46,14 @@ const user = (seaquelize, DataTypes) => {
 
     return user;
   }
+
+  User.beforeCreate(async user => {
+    user.password = await user.generatePasswordHash();
+  });
+
+  User.prototype.generatePasswordHash = async function() {
+    const saltRounds = 10;
+    return await bcrypt.hash(this.password, saltRounds);
 
   return User;
 };
