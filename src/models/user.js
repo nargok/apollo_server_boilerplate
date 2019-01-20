@@ -27,6 +27,9 @@ const user = (seaquelize, DataTypes) => {
         len: [7, 42]
       },
     },
+    role: {
+      type: DataTypes.STRING,
+    },
   });
 
   User.associate = models => {
