@@ -75,6 +75,7 @@ const createUserWithMessages = async () => {
       username: 'admin',
       email: 'admin@example.com',
       passowrd: 'password',
+      role: 'ADMIN',
       messages: [
         {
           text: 'Published the Road to learn React',
