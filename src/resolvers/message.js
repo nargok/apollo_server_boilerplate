@@ -10,11 +10,13 @@ export default {
       { models }) => {
       return await models.Message.findAll({
         limit,
-        where: {
-          createdAt: {
-            [Sequelize.Op.lt]: cursor
-          },
-        },
+        where: cursor
+          ? {
+            createdAt: {
+              [Sequelize.Op.lt]: cursor,
+            },
+          }
+          : null,
       });
     },
     message: async (parent, { id }, { models }) => {
