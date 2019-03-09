@@ -2,10 +2,10 @@ import Sequelize from 'sequelize';
 
 const sequelize = new Sequelize (
   // TODO 環境変数でDB設定ができるようにする
-  // process.env.DATABASE,
+  // process.env.TEST_DATABASE || process.env.DATABASE,
   // process.env.DATABASE_USER,
   // process.env.DATAVASE_PASSWORD,
-  'postgres', // DB name
+  'mytestdatabase' || 'postgres', // DB name
   'postgres', // user
   'password', // password
   {
