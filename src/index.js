@@ -1,3 +1,4 @@
+import http from 'http';
 import jwt from 'jsonwebtoken';
 import cors from 'cors';
 import express from 'express';
@@ -44,18 +45,29 @@ const server = new ApolloServer({
       message,
     };
   },
-  context: async ({ req }) =>{
-    const me = await getMe(req);
+  context: async ({ req, connection }) =>{
+    if (connection) {
+      return {
+        models,
+      };
+    }
 
-    return {
-      models,
-      me,
-      secret: process.env.SECRET,
-    };
-  }
-  });
+    if (req) {
+      const me = await getMe(req);
+
+      return {
+        models,
+        me,
+        secret: process.env.SECRET,
+      };
+    }
+  },
+});
 
 server.applyMiddleware({ app, path: '/graphql' });
+
+const httpServer = http.createServer(app);
+server.installSubscriptionHandlers(httpServer);
 
 const eraseDetabaseOnSync = true;
 
@@ -64,7 +76,7 @@ sequelize.sync({ force: eraseDetabaseOnSync }).then(async () => {
     createUserWithMessages(new Date());
   }
 
-  app.listen({ port: 8000 }, () => {
+  httpServer.listen({ port: 8000 }, () => {
     console.log('Apollo Server on http://localhost:8000/graphql');
   });
 });
