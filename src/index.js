@@ -32,20 +32,6 @@ const getMe = async req => {
   }
 };
 
-const batchUsers = async (keys, models) => {
-  const users = await models.User.findAll({
-    where: {
-      id: {
-        $in: keys,
-      },
-    },
-  });
-
-  return keys.map(key => users.find(user => user.id === key));
-};
-
-const userLoader = new DataLoader(keys => batchUsers(keys, models));
-
 const server = new ApolloServer({
   typeDefs: schema,
   resolvers,
