@@ -1,13 +1,12 @@
 import Sequelize from 'sequelize';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const sequelize = new Sequelize (
-  // TODO 環境変数でDB設定ができるようにする
-  // process.env.TEST_DATABASE || process.env.DATABASE,
-  // process.env.DATABASE_USER,
-  // process.env.DATAVASE_PASSWORD,
-  'mytestdatabase' || 'postgres', // DB name
-  'postgres', // user
-  'password', // password
+  process.env.TEST_DATABASE || process.env.DATABASE,
+  process.env.DATABASE_USER,
+  process.env.DATAVASE_PASSWORD,
   {
     host: 'localhost',
     dialect: 'postgres',
