@@ -1,3 +1,4 @@
+import DataLoader from 'dataloader';
 import http from 'http';
 import jwt from 'jsonwebtoken';
 import cors from 'cors';
@@ -8,6 +9,8 @@ import dotenv from 'dotenv';
 import schema from './schema';
 import resolvers from './resolvers';
 import models, { sequelize } from './models';
+
+import loaders from './loaders';
 
 dotenv.config();
 const app = express();
@@ -29,7 +32,6 @@ const getMe = async req => {
   }
 };
 
-
 const server = new ApolloServer({
   typeDefs: schema,
   resolvers,
@@ -49,6 +51,11 @@ const server = new ApolloServer({
     if (connection) {
       return {
         models,
+        loaders: {
+          user: new DataLoader(keys =>
+            loaders.user.batchUsers(keys, models),
+          ),
+        },
       };
     }
 
@@ -59,6 +66,11 @@ const server = new ApolloServer({
         models,
         me,
         secret: process.env.SECRET,
+        loaders: {
+          user: new DataLoader(keys =>
+            loaders.user.batchUsers(keys, models),
+          )
+        },
       };
     }
   },
