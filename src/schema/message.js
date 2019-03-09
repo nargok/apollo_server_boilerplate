@@ -1,6 +1,7 @@
 
 import { gql } from 'apollo-server-express';
 
+// Todo Add Cursor to Message type
 export default gql`
  extend type Query {
    messages(cursor: String, limit: Int): MessageConnection!
@@ -19,7 +20,7 @@ export default gql`
  
  type PageInfo {
    hasNextPage: Boolean!
-   endCursor: Date!
+   endCursor: String!
  }
  
  type Message {
