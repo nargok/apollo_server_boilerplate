@@ -17,11 +17,19 @@ export default {
             },
           }
           : {};
-      return await models.Message.findAll({
+      const messages = await models.Message.findAll({
         order: [['createdAt', 'DESC']],
         limit,
         ...cursorOptions,
       });
+
+      return {
+        edges: messages,
+        pageInfo: {
+          endCursor: messages[messages.length - 1].createdAt,
+        }
+      }
+
     },
     message: async (parent, { id }, { models }) => {
       return await models.Message.findById(id);
