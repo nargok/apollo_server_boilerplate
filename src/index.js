@@ -1,3 +1,4 @@
+import DataLoader from 'dataloader';
 import http from 'http';
 import jwt from 'jsonwebtoken';
 import cors from 'cors';
@@ -29,6 +30,17 @@ const getMe = async req => {
   }
 };
 
+const batchUsers = async (keys, models) => {
+  const users = await models.User.findAll({
+    where: {
+      id: {
+        $in: keys,
+      },
+    },
+  });
+
+  return keys.map(key => users.find(user => user.id === key));
+};
 
 const server = new ApolloServer({
   typeDefs: schema,
@@ -59,6 +71,9 @@ const server = new ApolloServer({
         models,
         me,
         secret: process.env.SECRET,
+        loaders: {
+          user: new DataLoader(keys => batchUsers(keys, models)),
+        },
       };
     }
   },
