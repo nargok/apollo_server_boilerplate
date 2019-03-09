@@ -10,6 +10,8 @@ import schema from './schema';
 import resolvers from './resolvers';
 import models, { sequelize } from './models';
 
+import loaders from './loaders';
+
 dotenv.config();
 const app = express();
 
@@ -42,6 +44,8 @@ const batchUsers = async (keys, models) => {
   return keys.map(key => users.find(user => user.id === key));
 };
 
+const userLoader = new DataLoader(keys => batchUsers(keys, models));
+
 const server = new ApolloServer({
   typeDefs: schema,
   resolvers,
@@ -61,6 +65,11 @@ const server = new ApolloServer({
     if (connection) {
       return {
         models,
+        loaders: {
+          user: new DataLoader(keys =>
+            loaders.user.batchUsers(keys, models),
+          ),
+        },
       };
     }
 
@@ -72,7 +81,9 @@ const server = new ApolloServer({
         me,
         secret: process.env.SECRET,
         loaders: {
-          user: new DataLoader(keys => batchUsers(keys, models)),
+          user: new DataLoader(keys =>
+            loaders.user.batchUsers(keys, models),
+          )
         },
       };
     }
