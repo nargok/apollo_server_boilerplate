@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node src/index.js"
+    "start": "nodemon --exec babel-node src/index.js",
+    "test-server": "TEST_DATEABASE=mytestdatabase yarn start",
+    "test": "mocha --require @babel/register 'src/**/*.spec.js'"
   },
   "author": "nargok",
   "license": "MIT",
@@ -23,9 +25,13 @@
     "uuid": "^3.3.2"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-stage-2": "^6.24.1",
+    "@babel/core": "^7.3.4",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.3.4",
+    "@babel/register": "^7.0.0",
+    "axios": "^0.18.0",
+    "chai": "^4.2.0",
+    "mocha": "^6.0.2",
     "nodemon": "^1.18.9"
   }
 }

@@ -71,8 +71,10 @@ server.installSubscriptionHandlers(httpServer);
 
 const eraseDetabaseOnSync = true;
 
-sequelize.sync({ force: eraseDetabaseOnSync }).then(async () => {
-  if (eraseDetabaseOnSync) {
+const isTest = !!process.env.TEST_DATABASE;
+
+sequelize.sync({ force: isTest }).then(async () => {
+  if (isTest) {
     createUserWithMessages(new Date());
   }
 
