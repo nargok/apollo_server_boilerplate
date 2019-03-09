@@ -8,15 +8,19 @@ export default {
       parent,
       { cursor, limit = 100},
       { models }) => {
-      return await models.Message.findAll({
-        limit,
-        where: cursor
+        const cursorOptions = cursor
           ? {
-            createdAt: {
-              [Sequelize.Op.lt]: cursor,
+            where: {
+              createdAt: {
+                [Sequelize.Op.lt]: cursor,
+              },
             },
           }
-          : null,
+          : {};
+      return await models.Message.findAll({
+        order: [['createdAt', 'DESC']],
+        limit,
+        ...cursorOptions,
       });
     },
     message: async (parent, { id }, { models }) => {
