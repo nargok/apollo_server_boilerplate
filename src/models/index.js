@@ -6,7 +6,7 @@ dotenv.config();
 const sequelize = new Sequelize (
   process.env.TEST_DATABASE || process.env.DATABASE,
   process.env.DATABASE_USER,
-  process.env.DATAVASE_PASSWORD,
+  process.env.DATABASE_PASSWORD,
   {
     host: 'localhost',
     dialect: 'postgres',
