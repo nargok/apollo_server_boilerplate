@@ -3,15 +3,23 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const sequelize = new Sequelize (
-  process.env.TEST_DATABASE || process.env.DATABASE,
-  process.env.DATABASE_USER,
-  process.env.DATAVASE_PASSWORD,
-  {
-    host: 'localhost',
-    dialect: 'postgres',
-  },
-);
+let sequelize;
+
+if (process.env.DATABASE_URL) {
+  sequelize = new Sequelize(process.env.DATABASE_URL, {
+    dialect: 'postgres'
+  });
+} else {
+  sequelize = new Sequelize (
+    process.env.TEST_DATABASE || process.env.DATABASE,
+    process.env.DATABASE_USER,
+    process.env.DATAVASE_PASSWORD,
+    {
+      host: 'localhost',
+      dialect: 'postgres',
+    },
+  );
+}
 
 const models = {
   User: sequelize.import('./user'),
